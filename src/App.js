@@ -1,50 +1,40 @@
-import './App.css';
-import Protypes from 'prop-types';
+import React from 'react';
+import axios from 'axios';
+import Movie from './Movie';
 
+class App extends React.Component {
+  state = { isLoading: true, movies: [] }
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies },
+      }
+    } = await axios.get('http://yts-proxy.now.sh/list_movies.json?sort_by=rating');
 
-function Food({fav2, pic, rating}){
-  return (
-    <div>
-    <h1>I Like {fav2}</h1>
-    <img src={pic} style={{width:'100px', border:'3px solid red'}} alt={fav2} />
-    <h4>{rating}/5.0</h4>
-    </div>
-  )
-}
-const foodLike=[
-  { id:1,name:'kimchi',
-  image:'https://img.huffingtonpost.com/asset/5ef1bbda2500002930eb3d3e.jpeg?cache=A4S3uCXvP2&ops=crop_0_254_2744_1936,scalefit_630_noupscale',
-rating:5},
-  { id:2,name:'ramun', image:'https://mblogthumb-phinf.pstatic.net/MjAyMDA1MjZfMjcw/MDAxNTkwNDgxNTI0OTI5.cElkTRG2bnYaUn0RlCq58_227T8KT_g2H1riUFYdYmYg.ZxnDFMZfaOq-jt4Qa5lk2gz3kr1Z-OG7HTVRiLYGEsAg.JPEG.naverschool/GettyImages-647266676.jpg?type=w800',
-rating:4},
-  { id:3,name:'guksoo', image:'https://img.huffingtonpost.com/asset/5ef1bbda2500002930eb3d3e.jpeg?cache=A4S3uCXvP2&ops=crop_0_254_2744_1936,scalefit_630_noupscale'},
-  { id:4,name:'된장찌개', image:'https://img.huffingtonpost.com/asset/5ef1bbda2500002930eb3d3e.jpeg?cache=A4S3uCXvP2&ops=crop_0_254_2744_1936,scalefit_630_noupscale'},
-]
+    console.log(movies);
 
-function App() {
-
- const renderFood = (dish) => {
-    return <Food key={dish.id} fav2={dish.name} pic={dish.image} rating={dish.rating} />
+    this.setState({ movies, isLoading: false })
   }
-console.log(foodLike.map(renderFood));
-  return (
-    <div className="App">
-      <h1> Hello</h1>
-     
-      <hr />
-     
-      {foodLike.map(renderFood)}
+
+  componentDidMount() {
+    this.getMovies();
+  }
+  render() {
+    const { isLoading, movies } = this.state;
+    return <div>
+      {
+        isLoading ?
+          'Loading...' :
+          movies.map((movie) => {
+            console.log(movie);
+            return (<Movie 
+              key={movie.id}
+              id={movie.id} year={movie.year}
+              title={movie.title} sumary={movie.summary}
+              poster={movie.medium_cover_image}
+            />);
+          })}
     </div>
-  );
+  }
 }
-
-
-Food.prototype={
-  name:Protypes.string.isRequired,
-  picture:Protypes.string.isRequired,
-  rating:Protypes.string.isRequired,
-  
-}
-
-
 export default App;
