@@ -1,11 +1,31 @@
-import React from 'react';
+import React from "react";
 // import axios from 'axios';
 // import Movie from './Movie';
-import Home from './routes/Home';
+// import Home from './routes/Home';
+import { HashRouter, Route } from "react-router-dom";
+import About from "./routes/About";
+import Home from "./routes/Home";
 
-import './App.css';
+import "./App.css";
 
 function App() {
- return <Home />;
+  //  return <Home />;
+  return (
+    <HashRouter>
+      <Route path="/about" component={About} />
+      <Route path="/" exact={true} component={Home} />
+    </HashRouter>
+
+    /* <Route path="/home">
+        <h1>Home</h1>
+      </Route>
+      <Route path="/home/introduction">
+        <h1>Introduction</h1>
+      </Route>
+      <Route path="/about">
+        <h1>About</h1>
+      </Route>
+     </HashRouter> */
+  );
 }
 export default App;
