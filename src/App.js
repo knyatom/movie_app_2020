@@ -11,7 +11,7 @@ import Navigation from "./components/Navigation";
 import Detail from "./routes/Detail";
 
 function App() {
-  //  return <Home />;
+  
   return (
     <HashRouter>
       <Navigation />
